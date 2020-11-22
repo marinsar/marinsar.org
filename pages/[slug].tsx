@@ -38,7 +38,7 @@ export const getStaticProps: GetStaticProps = async ({
 
 const Page = ({ pageEntry, assets, preview }: PageProps) => {
   return (
-    <Layout preview={preview}>
+    <Layout preview={preview} title={pageEntry.fields.title}>
       <RichTextDocument document={pageEntry.fields.body} assets={assets} />
     </Layout>
   );

@@ -1,11 +1,13 @@
 import type { FunctionComponent } from 'react';
 
 type LayoutProps = {
+  title?: string;
   preview?: boolean;
 };
 
 export const Layout: FunctionComponent<LayoutProps> = ({
   children,
+  title,
   preview = false,
 }) => {
   return (
@@ -15,7 +17,10 @@ export const Layout: FunctionComponent<LayoutProps> = ({
           Preview mode
         </div>
       )}
-      <div className='container mx-auto'>{children}</div>
+      <div className='container mx-auto'>
+        {title && <h1>{title}</h1>}
+        {children}
+      </div>
     </>
   );
 };
