@@ -35,28 +35,39 @@ export type Asset = {
   };
 };
 
-const buildEntriesUrl = (
-  params: { [k: string]: string | number },
+const getContentfulUrl = ({
+  endpoint,
+  params = {},
   preview = false,
-): string => {
-  const baseUrl = `https://${
-    preview ? 'preview' : 'cdn'
-  }.contentful.com/spaces/${process.env.CONTENTFUL_SPACE_ID}/environments/${
-    process.env.CONTENTFUL_ENVIRONMENT
-  }/entries?access_token=${process.env.CONTENTFUL_DELIVERY_TOKEN}`;
+}: {
+  endpoint: 'entries' | 'assets';
+  params?: { [k: string]: string | number };
+  preview?: boolean;
+}): string => {
+  const domain = preview ? 'preview.contentful.com' : 'cdn.contentful.com';
+  const token = preview
+    ? process.env.CONTENTFUL_PREVIEW_TOKEN
+    : process.env.CONTENTFUL_DELIVERY_TOKEN;
 
-  const url = Object.entries(params).reduce(
+  const url = `https://${domain}/spaces/${process.env.CONTENTFUL_SPACE_ID}/environments/${process.env.CONTENTFUL_ENVIRONMENT}/${endpoint}?access_token=${token}`;
+
+  const urlWithParams = Object.entries(params).reduce(
     (acc, [k, v]) => `${acc}&${encodeURIComponent(k)}=${encodeURIComponent(v)}`,
-    baseUrl,
+    url,
   );
 
-  return url;
+  return urlWithParams;
 };
 
 export const getPageSlugs = async (): Promise<string[]> => {
-  const url = buildEntriesUrl({ content_type: 'page', select: 'fields.slug' });
+  const url = getContentfulUrl({
+    endpoint: 'entries',
+    params: { content_type: 'page', select: 'fields.slug' },
+  });
+
   const response = await fetch(url);
   const responseBody = await response.json();
+
   const slugs = responseBody.items.map(({ fields: { slug } }: any) => slug);
 
   return slugs;
@@ -66,14 +77,15 @@ export const getPageBySlug = async (
   slug: string,
   preview: boolean,
 ): Promise<null | { pageEntry: PageEntry; assets: Asset[] }> => {
-  const url = buildEntriesUrl(
-    {
+  const url = getContentfulUrl({
+    endpoint: 'entries',
+    params: {
       content_type: 'page',
       'fields.slug': slug,
       limit: 1,
     },
     preview,
-  );
+  });
 
   const response = await fetch(url);
   const responseBody = await response.json();

@@ -1,4 +1,5 @@
 import type { FunctionComponent } from 'react';
+import Link from 'next/link';
 
 type LayoutProps = {
   title?: string;
@@ -13,8 +14,15 @@ export const Layout: FunctionComponent<LayoutProps> = ({
   return (
     <>
       {preview && (
-        <div className='h-10 bg-pink-600 uppercase font-black text-gray-50 flex items-center justify-center'>
-          Preview mode
+        <div className='h-10 bg-pink-600 text-gray-100 flex items-center justify-between px-4'>
+          <div className='uppercase font-bold'>
+            Previewing unpublished content
+          </div>
+          <Link href='/api/exit_preview'>
+            <a className='text-sm border-b border-dashed hover:border-solid hover:text-white'>
+              Exit preview
+            </a>
+          </Link>
         </div>
       )}
       <div className='container mx-auto'>

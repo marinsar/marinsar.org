@@ -17,8 +17,17 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   res.setPreviewData({});
 
-  const validSlug = pageResult.pageEntry.fields.slug;
+  const redirectUrl = `/${pageResult.pageEntry.fields.slug}`;
 
-  res.writeHead(307, { Location: `/${validSlug}` });
+  res.write(
+    `<!DOCTYPE html>
+     <html>
+       <head>
+         <meta http-equiv="Refresh" content="0; url=${redirectUrl}" />
+         <script>window.location.href = '${redirectUrl}'</script>
+       </head>
+     </html>`,
+  );
+
   res.end();
 };

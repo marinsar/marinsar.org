@@ -1,11 +1,13 @@
 module.exports = {
-  purge: ['./src/**/*.tsx', './src/**/*.jsx'],
+  purge: ['./{pages,components,lib}/**/*.{tsx,jsx}'],
   darkMode: false, // or 'media' or 'class'
   theme: {
     extend: {},
   },
   variants: {
-    extend: {},
+    extend: {
+      borderStyle: ['hover'],
+    },
   },
   plugins: [require('@tailwindcss/typography')],
 };
