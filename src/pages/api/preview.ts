@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 
-import { getPageBySlug } from '../../lib/api';
+import { getPage } from '../../lib/api';
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { secret, slug } = req.query;
@@ -9,7 +9,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     return res.status(401).json({ message: 'Invalid token' });
   }
 
-  const pageResult = await getPageBySlug(slug as string, true);
+  const pageResult = await getPage(slug as string, true);
 
   if (!pageResult) {
     return res.status(401).json({ message: 'Invalid slug' });
