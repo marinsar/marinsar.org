@@ -4,7 +4,7 @@ import { FunctionComponent } from 'react';
 import { Layout } from '../components/Layout';
 import { PayPalWidget } from '../components/PayPalWidget';
 import { RichTextDocument } from '../components/RichTextDocument';
-import { getPageSlugs, getPageBySlug, PageEntry, Asset } from '../lib/api';
+import { getPages, getPage, PageEntry, Asset } from '../lib/api';
 
 interface PageProps {
   pageEntry: PageEntry;
@@ -13,18 +13,18 @@ interface PageProps {
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const slugs = await getPageSlugs();
-  const paths = slugs.map((slug) => ({ params: { slug } }));
+  const pages = await getPages();
+  const paths = pages.map((page) => ({ params: page }));
 
   return { paths, fallback: false };
 };
 
 export const getStaticProps: GetStaticProps<
   PageProps,
-  { slug: string }
+  { id: string; path: string[] }
 > = async ({ params, preview = false }) => {
-  const slug = params!.slug;
-  const maybePage = await getPageBySlug(slug, preview);
+  const slug = params!.path[params!.path.length - 1];
+  const maybePage = await getPage(slug, preview);
 
   if (!maybePage) {
     return { notFound: true };
@@ -56,7 +56,7 @@ const Page: FunctionComponent<PageProps> = ({ pageEntry, assets, preview }) => {
   return (
     <Layout title={pageEntry.fields.title} preview={preview}>
       <div className='max-w-screen-xl mx-auto flex justify-start items-stretch'>
-        <div className='m-8 sm:m-16'>
+        <div className='m-8 sm:m-16 flex-grow'>
           <article className='prose'>
             <h1>{pageEntry.fields.title}</h1>
             <RichTextDocument

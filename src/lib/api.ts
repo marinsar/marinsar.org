@@ -3,13 +3,16 @@ import type { Document } from '@contentful/rich-text-types';
 export type PageEntry = {
   sys: {
     id: string;
-    createdAt: string; // ISO8601 timestamp
-    updatedAt: string; // ISO8601 timestamp
   };
   fields: {
     title: string;
     slug: string;
     body: Document;
+    parentPage?: {
+      sys: {
+        id: string;
+      };
+    };
   };
 };
 
@@ -71,21 +74,59 @@ const getContentfulUrl = ({
   return urlWithParams;
 };
 
-export const getPageSlugs = async (): Promise<string[]> => {
+type GetPagesResult = {
+  id: string;
+  path: string[];
+}[];
+
+// Get the id and path for every page.
+//
+// Example result:
+//
+//   [
+//     {id: '...', path: ['apply']},
+//     {id: '...', path: ['donate']},
+//
+//     {id: '...', path: ['missions', '2020']},
+//     // ...
+//   ]
+//
+export const getPages = async (): Promise<GetPagesResult> => {
   const url = getContentfulUrl({
     endpoint: 'entries',
-    params: { content_type: 'page', select: 'fields.slug' },
+    params: {
+      content_type: 'page',
+      select: 'sys.id,fields.slug,fields.parentPage',
+    },
   });
 
   const response = await fetch(url);
   const responseBody = await response.json();
 
-  const slugs = responseBody.items.map(({ fields: { slug } }: any) => slug);
+  const pages: GetPagesResult = responseBody.items.map((page: PageEntry) => {
+    const path = [page.fields.slug];
 
-  return slugs;
+    let parentPage = responseBody.items.find(
+      (otherPage: PageEntry) =>
+        otherPage.sys.id === page.fields.parentPage?.sys.id,
+    );
+
+    while (parentPage) {
+      path.unshift(parentPage.fields.slug);
+      parentPage = responseBody.items.find(
+        (otherPage: PageEntry) =>
+          otherPage.sys.id === parentPage.fields.parentPage?.sys.id,
+      );
+    }
+
+    return { id: page.sys.id, path };
+  });
+
+  return pages;
 };
 
-export const getPageBySlug = async (
+// Get all the content for a single page, including any referenced assets.
+export const getPage = async (
   slug: string,
   preview: boolean,
 ): Promise<null | { pageEntry: PageEntry; assets: Asset[] }> => {
