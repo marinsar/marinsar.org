@@ -48,7 +48,7 @@ const Home: FunctionComponent<HomeProps> = ({
 }) => {
   return (
     <div className='w-full h-full bg-gradient-to-b from-gray-900 bg-gray-800 text-gray-100'>
-      <Layout title='Home' backgroundColor={null}>
+      <Layout backgroundColor={null}>
         <div className='max-w-screen-xl mx-auto'>
           <div className='mx-8 sm:mx-16 my-8 sm:my-16 space-y-8 flex flex-col'>
             <h1 className='text-5xl font-medium font-serif'>

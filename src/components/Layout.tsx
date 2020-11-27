@@ -37,11 +37,24 @@ export const Layout: FunctionComponent<LayoutProps> = ({
         </div>
       )}
       <header className={`${textColor} ${backgroundColor ?? ''} `}>
-        <div className='max-w-screen-xl mx-auto flex flex-col text-center items-center space-y-4 sm:space-y-0 sm:flex-row sm:justify-between sm:space-x-8 py-8 px-8 sm:px-16 '>
+        <div className='max-w-screen-xl mx-auto flex flex-col items-center space-y-4 sm:space-y-0 sm:flex-row sm:justify-between sm:space-x-8 py-12 px-8 sm:px-16 '>
           <Link href='/'>
-            <a className=''>
-              Marin&nbsp;County&nbsp;Sheriff's&nbsp;Office
-              Search&nbsp;&&nbsp;Rescue
+            <a className='flex items-center space-x-4 xl:space-x-8  text-center sm:text-left'>
+              <img
+                src='/marin_sar_logo.svg'
+                title='Marin County Search and Rescue Logo'
+                className='h-44 hidden sm:block shadow-sm'
+                role='presentation'
+              />
+              <div>
+                <span className='text-lg md:text-xl lg:text-2xl xl:text-3xl'>
+                  Marin&nbsp;County&nbsp;Sheriff's&nbsp;Office
+                </span>
+                <br />
+                <span className='text-2xl md:text-3xl lg:text-4xl xl:text-5xl'>
+                  Search&nbsp;&&nbsp;Rescue
+                </span>
+              </div>
             </a>
           </Link>
           <Nav />
@@ -51,30 +64,30 @@ export const Layout: FunctionComponent<LayoutProps> = ({
       <footer className={`p-8 sm:p-16 ${backgroundColor ?? ''} ${textColor}`}>
         <div className='max-w-screen-xl mx-auto'>
           <div className='flex flex-col justify-center space-y-8 md:flex-row md:justify-between md:items-center md:space-x-4 md:space-y-0'>
-            <div className='flex items-center justify-center space-x-4'>
-              <img
-                src='/mcso_logo.svg'
-                title="Marin County Sheriff's Office logo"
-                className='w-24 h-24'
-              />
-              <img
-                src='/mra_logo.png'
-                title="Marin County Sheriff's Office logo"
-                className='w-24 h-24'
-              />
-              <img
-                src='/msar_logo.png'
-                title="Marin County Sheriff's Office logo"
-                className='w-24 h-24'
-              />
-            </div>
-            <address className='text-center md:text-right text-sm'>
+            <address className='text-center md:text-left text-sm'>
               Marin County Sheriff's Department Search and Rescue Team <br />
               1600 Los Gamos Dr. Suite 200 <br />
               San Rafael, CA 94903 <br />
             </address>
+            <div className='flex items-center justify-center space-x-4'>
+              <img
+                src='/mcso_logo.svg'
+                title="Marin County Sheriff's Office logo"
+                className='w-20 h-20'
+              />
+              <img
+                src='/mra_logo.png'
+                title='Mountain Rescue Association logo'
+                className='w-20 h-20'
+              />
+              <img
+                src='/marin_sar_mountain_rescue_logo.svg'
+                title='Marin County Search and Rescue mountain rescue unit logo'
+                className='w-20 h-20'
+              />
+            </div>
           </div>
-          <div className='text-sm text-center my-8 text-gray-600 max-w-prose mx-auto'>
+          <div className='text-sm text-center mt-24 text-gray-600 max-w-prose mx-auto'>
             © 2020 Marin County Search and Rescue. Marin County Search and
             Rescue is a division of the Marin County Sheriff's Office, and is a
             registered 501(c)(3) non-profit organization.

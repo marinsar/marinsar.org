@@ -43,7 +43,7 @@ const SidebarLink: FunctionComponent<{ href: string; title: string }> = ({
 }) => {
   return (
     <a
-      className='border-dotted border-b border-black hover:text-blue-600 hover:border-blue-600'
+      className='border-solid border-b border-gray-900 font-medium hover:text-blue-600 hover:border-blue-600'
       href={href}
       title={title}
     >
@@ -65,7 +65,7 @@ const Page: FunctionComponent<PageProps> = ({ pageEntry, assets, preview }) => {
             />
           </article>
         </div>
-        <div className='hidden sm:block md:px-16 bg-gray-100 flex-grow px-8 py-16'>
+        <div className='hidden sm:block md:px-16 bg-gray-100 flex-grow px-8 py-20'>
           <h2 className='text-gray-600 text-sm uppercase font-bold mb-4'>
             Connect
           </h2>
