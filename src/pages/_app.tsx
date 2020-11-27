@@ -1,8 +1,9 @@
+import { FunctionComponent } from 'react';
 import type { AppProps } from 'next/app';
 
 import '../index.css';
 
-const MyApp = ({ Component, pageProps }: AppProps) => {
+const MyApp: FunctionComponent<AppProps> = ({ Component, pageProps }) => {
   return <Component {...pageProps} />;
 };
 

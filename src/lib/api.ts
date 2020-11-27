@@ -21,7 +21,7 @@ export type Asset = {
   };
   fields: {
     title?: string;
-    file?: {
+    file: {
       contentType: string;
       fileName: string;
       url: string; // Need to prepend protocol
@@ -33,6 +33,18 @@ export type Asset = {
       };
     };
   };
+};
+
+export type ImageMetadata = {
+  url: string;
+  width: number;
+  height: number;
+  title: string;
+};
+
+export type Announcement = {
+  message: string;
+  visible: boolean;
 };
 
 const getContentfulUrl = ({
@@ -97,6 +109,50 @@ export const getPageBySlug = async (
   const result = {
     pageEntry: responseBody.items[0],
     assets: responseBody.includes?.Asset ?? [],
+  };
+
+  return result;
+};
+
+export const getPhotosEntry = async (
+  entryId: string,
+  preview: boolean = false,
+): Promise<ImageMetadata[]> => {
+  const url = getContentfulUrl({
+    endpoint: 'entries',
+    params: {
+      'sys.id': entryId,
+    },
+    preview,
+  });
+
+  const response = await fetch(url);
+  const responseBody = await response.json();
+
+  const result = responseBody.includes.Asset.map((asset: Asset) => ({
+    title: asset.fields.title,
+    url: `https:${asset.fields.file.url}`,
+    width: asset.fields.file.details.image?.width,
+    height: asset.fields.file.details.image?.height,
+  }));
+
+  return result;
+};
+
+export const getAnnouncement = async (
+  announcementId: string,
+): Promise<Announcement> => {
+  const url = getContentfulUrl({
+    endpoint: 'entries',
+    params: { 'sys.id': announcementId },
+  });
+
+  const response = await fetch(url);
+  const responseBody = await response.json();
+
+  const result = {
+    message: responseBody.items[0].fields.message,
+    visible: responseBody.items[0].fields.visible,
   };
 
   return result;

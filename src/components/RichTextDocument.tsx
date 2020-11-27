@@ -21,7 +21,7 @@ const ImageNode = ({ node, assets }: { node: Node; assets: Asset[] }) => {
   };
 
   return (
-    <div className='relative w-full'>
+    <div className='relative w-full flex justify-center py-4'>
       <Image src={src} alt={alt} width={width} height={height} />
     </div>
   );
@@ -42,9 +42,5 @@ export const RichTextDocument = ({
     },
   };
 
-  return (
-    <div className='prose'>
-      {documentToReactComponents(document, renderOptions)}
-    </div>
-  );
+  return <>{documentToReactComponents(document, renderOptions)}</>;
 };
