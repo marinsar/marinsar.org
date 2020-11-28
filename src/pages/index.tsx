@@ -47,7 +47,7 @@ const Home: FunctionComponent<HomeProps> = ({
   galleryImages,
 }) => {
   return (
-    <div className='w-full h-full bg-gradient-to-b from-gray-900 bg-gray-800 text-gray-100'>
+    <div className='min-w-full min-h-full bg-gradient-to-b from-gray-900 bg-gray-800 text-gray-100'>
       <Layout backgroundColor={null}>
         <div className='max-w-screen-xl mx-auto'>
           <div className='mx-8 sm:mx-16 my-8 sm:my-16 space-y-8 flex flex-col'>

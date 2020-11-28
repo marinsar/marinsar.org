@@ -19,10 +19,13 @@ export const Layout: FunctionComponent<LayoutProps> = ({
   const textColor = backgroundColor === 'bg-gray-900' ? 'text-gray-100' : '';
 
   return (
-    <>
+    <div className='flex flex-col h-full'>
       <Head>
         <title>{title ? `${title} | Marin SAR` : 'Marin SAR'}</title>
-        <meta name='viewport' content='initial-scale=1.0, width=device-width' />
+        <meta
+          name='viewport'
+          content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0'
+        />
       </Head>
       {preview && (
         <div className='h-10 bg-pink-600 text-gray-100 flex items-center justify-between px-4'>
@@ -47,11 +50,11 @@ export const Layout: FunctionComponent<LayoutProps> = ({
                 role='presentation'
               />
               <div>
-                <span className='text-lg md:text-xl lg:text-2xl xl:text-3xl'>
+                <span className='text-md md:text-xl lg:text-2xl xl:text-3xl'>
                   Marin&nbsp;County&nbsp;Sheriff's&nbsp;Office
                 </span>
                 <br />
-                <span className='text-2xl md:text-3xl lg:text-4xl xl:text-5xl'>
+                <span className='text-lg md:text-3xl lg:text-4xl xl:text-5xl'>
                   Search&nbsp;&&nbsp;Rescue
                 </span>
               </div>
@@ -60,7 +63,7 @@ export const Layout: FunctionComponent<LayoutProps> = ({
           <Nav />
         </div>
       </header>
-      {children}
+      <div class='flex-grow'>{children}</div>
       <footer className={`p-8 sm:p-16 ${backgroundColor ?? ''} ${textColor}`}>
         <div className='max-w-screen-xl mx-auto'>
           <div className='flex flex-col justify-center space-y-8 md:flex-row md:justify-between md:items-center md:space-x-4 md:space-y-0'>
@@ -94,6 +97,6 @@ export const Layout: FunctionComponent<LayoutProps> = ({
           </div>
         </div>
       </footer>
-    </>
+    </div>
   );
 };

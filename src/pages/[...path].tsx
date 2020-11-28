@@ -55,7 +55,7 @@ const SidebarLink: FunctionComponent<{ href: string; title: string }> = ({
 const Page: FunctionComponent<PageProps> = ({ pageEntry, assets, preview }) => {
   return (
     <Layout title={pageEntry.fields.title} preview={preview}>
-      <div className='max-w-screen-xl mx-auto flex justify-start items-stretch'>
+      <div className='max-w-screen-xl mx-auto flex justify-start items-stretch h-full'>
         <div className='m-8 sm:m-16 flex-grow'>
           <article className='prose'>
             <h1>{pageEntry.fields.title}</h1>
