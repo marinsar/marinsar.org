@@ -54,10 +54,10 @@ const Home: FunctionComponent<HomeProps> = ({
             <h1 className='text-5xl font-medium font-serif'>
               Any time, anywhere, any weather.
             </h1>
-            <h2 className='text-xl mb-8 max-w-md leading-relaxed'>
+            <h2 className='text-xl mb-8 max-w-lg leading-relaxed'>
               Learn about Marin SAR by reading{' '}
-              <BigLink href='/what-we-do'>what we do</BigLink> and our{' '}
-              <BigLink href='/unit-history'>unit history</BigLink>. You may be
+              <BigLink href='/what-we-do'>what we do</BigLink> or browsing{' '}
+              <BigLink href='/missions'>past missions</BigLink>. You may be
               looking to <BigLink href='/apply'>apply</BigLink>.
             </h2>
           </div>

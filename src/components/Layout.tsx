@@ -63,7 +63,7 @@ export const Layout: FunctionComponent<LayoutProps> = ({
           <Nav />
         </div>
       </header>
-      <div class='flex-grow'>{children}</div>
+      <div className='flex-grow'>{children}</div>
       <footer className={`p-8 sm:p-16 ${backgroundColor ?? ''} ${textColor}`}>
         <div className='max-w-screen-xl mx-auto'>
           <div className='flex flex-col justify-center space-y-8 md:flex-row md:justify-between md:items-center md:space-x-4 md:space-y-0'>

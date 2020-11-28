@@ -50,6 +50,14 @@ export type Announcement = {
   visible: boolean;
 };
 
+export type Mission = {
+  id: string;
+  missionNumber: string;
+  title: string;
+  date: string;
+  summary: string;
+};
+
 const getContentfulUrl = ({
   endpoint,
   params = {},
@@ -195,6 +203,32 @@ export const getAnnouncement = async (
     message: responseBody.items[0].fields.message,
     visible: responseBody.items[0].fields.visible,
   };
+
+  return result;
+};
+
+export const getMissions = async (year: number): Promise<Mission[]> => {
+  const url = getContentfulUrl({
+    endpoint: 'entries',
+    params: {
+      content_type: 'mission',
+      'fields.date[gte]': `${year}-01-01T00:00:00Z`,
+      'fields.date[lt]': `${year + 1}-01-01T00:00:00Z`,
+    },
+  });
+
+  const response = await fetch(url);
+  const responseBody = await response.json();
+
+  const result: Mission[] = responseBody.items.map((item: any) => ({
+    id: item.sys.id,
+    missionNumber: item.fields.number,
+    title: item.fields.title,
+    summary: item.fields.summary,
+    date: item.fields.date,
+  }));
+
+  result.sort((a, b) => a.missionNumber.localeCompare(b.missionNumber));
 
   return result;
 };
