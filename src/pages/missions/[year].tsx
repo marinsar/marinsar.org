@@ -47,18 +47,24 @@ const MissionsPage: FunctionComponent<MissionsPageProps> = ({ missions }) => {
           </Link>
         </p>
         {missions.map(({ id, missionNumber, title, date, summary }) => (
-          <section key={id}>
-            <h2 className='flex items-center space-x-4'>
-              <div className='text-sm p-1 bg-gray-200 rounded text-gray-700'>
-                {missionNumber}
-              </div>{' '}
-              <div>
-                {title}{' '}
-                <span className='font-normal'>
-                  ({new Date(date).toLocaleDateString()})
-                </span>
-              </div>
-            </h2>
+          <section key={id} id={missionNumber}>
+            <a
+              href={`#${missionNumber}`}
+              className='no-underline'
+              style={{ textDecoration: 'none' }}
+            >
+              <h2 className='flex items-center space-x-4'>
+                <div className='text-sm p-1 bg-gray-200 rounded text-gray-700'>
+                  {missionNumber}
+                </div>{' '}
+                <div>
+                  {title}{' '}
+                  <span className='font-normal'>
+                    ({new Date(date).toLocaleDateString()})
+                  </span>
+                </div>
+              </h2>
+            </a>
             <p>{summary}</p>
           </section>
         ))}
