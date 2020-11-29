@@ -9,7 +9,7 @@ const MissionsIndexPage: FunctionComponent = ({}) => {
   const years = getMissionYears();
 
   return (
-    <Layout>
+    <Layout title='Missions'>
       <PageLayout>
         <h1>Missions</h1>
         <p>Browse past missions by year:</p>

@@ -39,7 +39,7 @@ const MissionsPage: FunctionComponent<MissionsPageProps> = ({ missions }) => {
   const { year } = router.query;
 
   return (
-    <Layout>
+    <Layout title={`${year} Missions`}>
       <PageLayout>
         <p>
           <Link href='/missions'>

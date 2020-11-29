@@ -16,7 +16,7 @@ const CalendarPage = () => {
   }, [ref.current, setWidth]);
 
   return (
-    <Layout title='Marin SAR | Calendar'>
+    <Layout title='Calendar'>
       <div className='p-8 sm:p-16'>
         <div ref={ref}>
           {width && width < MIN_MONTH_VIEW_WIDTH_PX && (
