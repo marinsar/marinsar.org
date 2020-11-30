@@ -28,10 +28,8 @@ export const Layout: FunctionComponent<LayoutProps> = ({
         />
       </Head>
       {preview && (
-        <div className='h-10 bg-pink-600 text-gray-100 flex items-center justify-between px-4'>
-          <div className='uppercase font-bold'>
-            Previewing unpublished content
-          </div>
+        <div className='bg-pink-600 text-gray-100 flex items-center justify-between px-4 py-2'>
+          <div className='uppercase font-bold'>Previewing draft content</div>
           <Link href='/api/exit_preview'>
             <a className='text-sm border-b border-dashed hover:border-solid hover:text-white'>
               Exit preview
