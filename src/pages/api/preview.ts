@@ -9,15 +9,15 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     return res.status(401).json({ message: 'Invalid token' });
   }
 
-  const pageResult = await getPage(slug as string, true);
+  const page = await getPage(slug as string, true);
 
-  if (!pageResult) {
+  if (!page) {
     return res.status(401).json({ message: 'Invalid slug' });
   }
 
   res.setPreviewData({});
 
-  const redirectUrl = `/${pageResult.pageEntry.fields.slug}`;
+  const redirectUrl = `/${page.slug}`;
 
   res.write(
     `<!DOCTYPE html>

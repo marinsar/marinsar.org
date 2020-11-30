@@ -1,62 +1,96 @@
 import type { Document } from '@contentful/rich-text-types';
 
-export type PageEntry = {
-  sys: {
-    id: string;
+interface RawPageFields {
+  title: string;
+  slug: string;
+  body: Document;
+  parentPage?: {
+    sys: {
+      id: string;
+    };
   };
-  fields: {
-    title: string;
-    slug: string;
-    body: Document;
-    parentPage?: {
+}
+
+interface RawAnnouncementFields {
+  message: string;
+  visible: boolean;
+}
+
+interface RawMissionFields {
+  number: string;
+  title: string;
+  summary: string;
+  date: string;
+}
+
+interface RawEntriesResponse<F> {
+  items: Array<{
+    sys: {
+      id: string;
+    };
+    fields: F;
+  }>;
+  includes?: {
+    Asset?: Array<{
       sys: {
         id: string;
+        createdAt: string; // ISO8601 timestamp
+        updatedAt: string; // ISO8601 timestamp
       };
-    };
-  };
-};
-
-export type Asset = {
-  sys: {
-    id: string;
-    createdAt: string; // ISO8601 timestamp
-    updatedAt: string; // ISO8601 timestamp
-  };
-  fields: {
-    title?: string;
-    file: {
-      contentType: string;
-      fileName: string;
-      url: string; // Need to prepend protocol
-      details: {
-        image?: {
-          width: number;
-          height: number;
+      fields: {
+        title?: string;
+        file: {
+          contentType: string;
+          fileName: string;
+          url: string; // Need to prepend protocol
+          details?: {
+            image?: {
+              width: number;
+              height: number;
+            };
+          };
         };
       };
-    };
+    }>;
   };
-};
+}
 
-export type ImageMetadata = {
+export interface Page {
+  id: string;
+  title: string;
+  slug: string;
+  body: Document;
+  parentPageId: string | null;
+  images: Image[];
+}
+
+export interface Image {
+  id: string;
   url: string;
   width: number;
   height: number;
   title: string;
-};
+}
 
-export type Announcement = {
+export interface Announcement {
+  id: string;
   message: string;
   visible: boolean;
-};
+}
 
-export type Mission = {
+export interface Mission {
   id: string;
   missionNumber: string;
   title: string;
   date: string;
   summary: string;
-};
+}
+
+// A path to a page.
+//
+// For example, `['missions', '2020']` is the path for the page appearing at
+// `/missions/2020`.
+export type Path = string[];
 
 const getContentfulUrl = ({
   endpoint,
@@ -82,24 +116,8 @@ const getContentfulUrl = ({
   return urlWithParams;
 };
 
-type GetPagesResult = {
-  id: string;
-  path: string[];
-}[];
-
-// Get the id and path for every page.
-//
-// Example result:
-//
-//   [
-//     {id: '...', path: ['apply']},
-//     {id: '...', path: ['donate']},
-//
-//     {id: '...', path: ['missions', '2020']},
-//     // ...
-//   ]
-//
-export const getPages = async (): Promise<GetPagesResult> => {
+// Get the id and path for every page on the site.
+export const getPaths = async (): Promise<Path[]> => {
   const url = getContentfulUrl({
     endpoint: 'entries',
     params: {
@@ -109,35 +127,34 @@ export const getPages = async (): Promise<GetPagesResult> => {
   });
 
   const response = await fetch(url);
-  const responseBody = await response.json();
+  const responseBody: RawEntriesResponse<RawPageFields> = await response.json();
 
-  const pages: GetPagesResult = responseBody.items.map((page: PageEntry) => {
+  const paths: Path[] = responseBody.items.map((page) => {
     const path = [page.fields.slug];
 
     let parentPage = responseBody.items.find(
-      (otherPage: PageEntry) =>
-        otherPage.sys.id === page.fields.parentPage?.sys.id,
+      (otherPage) => otherPage.sys.id === page.fields.parentPage?.sys.id,
     );
 
     while (parentPage) {
       path.unshift(parentPage.fields.slug);
       parentPage = responseBody.items.find(
-        (otherPage: PageEntry) =>
-          otherPage.sys.id === parentPage.fields.parentPage?.sys.id,
+        (otherPage) =>
+          otherPage.sys.id === parentPage?.fields.parentPage?.sys.id,
       );
     }
 
-    return { id: page.sys.id, path };
+    return path;
   });
 
-  return pages;
+  return paths;
 };
 
 // Get all the content for a single page, including any referenced assets.
 export const getPage = async (
   slug: string,
   preview: boolean,
-): Promise<null | { pageEntry: PageEntry; assets: Asset[] }> => {
+): Promise<null | Page> => {
   const url = getContentfulUrl({
     endpoint: 'entries',
     params: {
@@ -149,24 +166,43 @@ export const getPage = async (
   });
 
   const response = await fetch(url);
-  const responseBody = await response.json();
+  const responseBody: RawEntriesResponse<RawPageFields> = await response.json();
 
   if (responseBody.items.length === 0) {
     return null;
   }
 
-  const result = {
-    pageEntry: responseBody.items[0],
-    assets: responseBody.includes?.Asset ?? [],
+  const images =
+    responseBody.includes?.Asset?.filter(
+      (asset) => asset.fields.file?.details?.image,
+    ).map((asset) => {
+      return {
+        id: asset.sys.id,
+        url: `https:${asset.fields.file.url}`,
+        width: asset.fields.file.details?.image?.width ?? 0,
+        height: asset.fields.file.details?.image?.height ?? 0,
+        title: asset.fields.title ?? '',
+      };
+    }) ?? [];
+
+  const rawPage = responseBody.items[0];
+
+  const page: Page = {
+    id: rawPage.sys.id,
+    title: rawPage.fields.title,
+    slug: rawPage.fields.slug,
+    body: rawPage.fields.body,
+    parentPageId: rawPage.fields.parentPage?.sys.id ?? null,
+    images,
   };
 
-  return result;
+  return page;
 };
 
-export const getPhotosEntry = async (
+export const getPhotos = async (
   entryId: string,
   preview: boolean = false,
-): Promise<ImageMetadata[]> => {
+): Promise<Image[]> => {
   const url = getContentfulUrl({
     endpoint: 'entries',
     params: {
@@ -176,30 +212,37 @@ export const getPhotosEntry = async (
   });
 
   const response = await fetch(url);
-  const responseBody = await response.json();
+  const responseBody: RawEntriesResponse<{}> = await response.json();
 
-  const result = responseBody.includes.Asset.map((asset: Asset) => ({
-    title: asset.fields.title,
-    url: `https:${asset.fields.file.url}`,
-    width: asset.fields.file.details.image?.width,
-    height: asset.fields.file.details.image?.height,
-  }));
+  const result: Image[] =
+    responseBody.includes?.Asset?.map((asset) => ({
+      id: asset.sys.id,
+      title: asset.fields.title ?? '',
+      url: `https:${asset.fields.file.url}`,
+      width: asset.fields.file?.details?.image?.width ?? 0,
+      height: asset.fields.file?.details?.image?.height ?? 0,
+    })) ?? [];
 
   return result;
 };
 
 export const getAnnouncement = async (
   announcementId: string,
-): Promise<Announcement> => {
+): Promise<null | Announcement> => {
   const url = getContentfulUrl({
     endpoint: 'entries',
     params: { 'sys.id': announcementId },
   });
 
   const response = await fetch(url);
-  const responseBody = await response.json();
+  const responseBody: RawEntriesResponse<RawAnnouncementFields> = await response.json();
 
-  const result = {
+  if (!responseBody.items[0]) {
+    return null;
+  }
+
+  const result: Announcement = {
+    id: responseBody.items[0].sys.id,
     message: responseBody.items[0].fields.message,
     visible: responseBody.items[0].fields.visible,
   };
@@ -218,9 +261,9 @@ export const getMissions = async (year: number): Promise<Mission[]> => {
   });
 
   const response = await fetch(url);
-  const responseBody = await response.json();
+  const responseBody: RawEntriesResponse<RawMissionFields> = await response.json();
 
-  const result: Mission[] = responseBody.items.map((item: any) => ({
+  const result: Mission[] = responseBody.items.map((item) => ({
     id: item.sys.id,
     missionNumber: item.fields.number,
     title: item.fields.title,

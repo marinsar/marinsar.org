@@ -2,42 +2,36 @@ import Image from 'next/image';
 import { Node, Document, BLOCKS } from '@contentful/rich-text-types';
 import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
 
-import type { Asset } from '../lib/api';
+import type { Image as ImageType } from '../lib/api';
+import { FunctionComponent } from 'react';
 
-const ImageNode = ({ node, assets }: { node: Node; assets: Asset[] }) => {
-  const asset = assets.find(
-    (asset) => asset.sys?.id === node.data?.target?.sys?.id,
-  );
+const ImageNode = ({ node, images }: { node: Node; images: ImageType[] }) => {
+  const image = images.find((d) => d.id === node.data?.target?.sys?.id);
 
-  if (!asset) {
+  if (!image) {
     return null;
   }
 
-  const src = `http:${asset.fields.file?.url}`;
-  const alt = asset.fields.title ?? '';
-  const { width, height } = asset.fields.file?.details.image ?? {
-    width: 0,
-    height: 0,
-  };
-
   return (
     <div className='relative w-full flex justify-center py-4'>
-      <Image src={src} alt={alt} width={width} height={height} />
+      <Image
+        src={image.url}
+        alt={image.title}
+        width={image.width}
+        height={image.height}
+      />
     </div>
   );
 };
 
-export const RichTextDocument = ({
-  document,
-  assets,
-}: {
+export const RichTextDocument: FunctionComponent<{
   document: Document;
-  assets: Asset[];
-}) => {
+  images: ImageType[];
+}> = ({ document, images }) => {
   const renderOptions = {
     renderNode: {
       [BLOCKS.EMBEDDED_ASSET]: (node: Node) => (
-        <ImageNode node={node} assets={assets} />
+        <ImageNode node={node} images={images} />
       ),
     },
   };

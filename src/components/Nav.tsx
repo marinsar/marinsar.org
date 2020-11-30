@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router';
 import Link from 'next/link';
+
 import { ExternalLinkIcon } from './ExternalLinkIcon';
 
 const NAV_LINKS = [

@@ -54,7 +54,7 @@ const MissionsPage: FunctionComponent<MissionsPageProps> = ({ missions }) => {
               style={{ textDecoration: 'none' }}
             >
               <h2 className='flex items-center space-x-4'>
-                <div className='text-sm p-1 bg-gray-200 rounded text-gray-700'>
+                <div className='text-sm p-1 bg-gray-200 rounded text-gray-700 whitespace-nowrap'>
                   {missionNumber}
                 </div>{' '}
                 <div>

@@ -4,44 +4,44 @@ import { FunctionComponent } from 'react';
 import { Layout } from '../components/Layout';
 import { PageLayout } from '../components/PageLayout';
 import { RichTextDocument } from '../components/RichTextDocument';
-import { getPages, getPage, PageEntry, Asset } from '../lib/api';
+import { getPaths, getPage, Page as PageType, Path } from '../lib/api';
 
 interface PageProps {
-  pageEntry: PageEntry;
-  assets: Asset[];
+  page: PageType;
   preview: boolean;
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const pages = await getPages();
-  const paths = pages.map((page) => ({ params: page }));
+  const paths = await getPaths();
+  const wrappedPaths = paths.map((path) => ({ params: { path } }));
 
-  return { paths, fallback: false };
+  return { paths: wrappedPaths, fallback: false };
 };
 
 export const getStaticProps: GetStaticProps<
   PageProps,
-  { id: string; path: string[] }
+  { path: Path }
 > = async ({ params, preview = false }) => {
-  const slug = params!.path[params!.path.length - 1];
-  const maybePage = await getPage(slug, preview);
+  const path = params!.path;
+  const slug = path[path.length - 1];
+  const page = await getPage(slug, preview);
 
-  if (!maybePage) {
+  if (!page) {
     return { notFound: true };
   }
 
   return {
-    props: { preview, ...maybePage },
+    props: { preview, page },
     revalidate: Number(process.env.REVALIDATE_TIME_S),
   };
 };
 
-const Page: FunctionComponent<PageProps> = ({ pageEntry, assets, preview }) => {
+const Page: FunctionComponent<PageProps> = ({ page, preview }) => {
   return (
-    <Layout title={pageEntry.fields.title} preview={preview}>
+    <Layout title={page.title} preview={preview}>
       <PageLayout>
-        <h1>{pageEntry.fields.title}</h1>
-        <RichTextDocument document={pageEntry.fields.body} assets={assets} />
+        <h1>{page.title}</h1>
+        <RichTextDocument document={page.body} images={page.images} />
       </PageLayout>
     </Layout>
   );

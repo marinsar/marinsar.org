@@ -2,19 +2,14 @@ import { FunctionComponent } from 'react';
 import { GetStaticProps } from 'next';
 import Link from 'next/link';
 
-import {
-  getPhotosEntry,
-  getAnnouncement,
-  Announcement,
-  ImageMetadata,
-} from '../lib/api';
+import { getPhotos, getAnnouncement, Announcement, Image } from '../lib/api';
 import { Layout } from '../components/Layout';
 import { ImageGallery } from '../components/ImageGallery';
 import { AlertIcon } from '../components/AlertIcon';
 
 interface HomeProps {
-  announcement: Announcement;
-  galleryImages: ImageMetadata[];
+  announcement: null | Announcement;
+  galleryImages: Image[];
 }
 
 const GALLERY_ENTRY_ID = '4C0dAB5QuL4QdGbqdJZ1pl';
@@ -23,7 +18,7 @@ const ANNOUNCEMENT_ID = '9ciTmDG0hXu5RAeiFGH4A';
 export const getStaticProps: GetStaticProps<HomeProps> = async ({
   preview,
 }) => {
-  const galleryImages = await getPhotosEntry(GALLERY_ENTRY_ID, preview);
+  const galleryImages = await getPhotos(GALLERY_ENTRY_ID, preview);
   const announcement = await getAnnouncement(ANNOUNCEMENT_ID);
 
   return {

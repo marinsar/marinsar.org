@@ -1,11 +1,11 @@
 import { FunctionComponent, useEffect, useState } from 'react';
 import Image from 'next/image';
 
-import { ImageMetadata } from '../lib/api';
+import type { Image as ImageType } from '../lib/api';
 
 const TRANSITION_MS = 6000;
 
-export const ImageGallery: FunctionComponent<{ images: ImageMetadata[] }> = ({
+export const ImageGallery: FunctionComponent<{ images: ImageType[] }> = ({
   images,
 }) => {
   const [index, setIndex] = useState(0);
