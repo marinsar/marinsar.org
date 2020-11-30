@@ -61,10 +61,7 @@ const Home: FunctionComponent<HomeProps> = ({
               <div className='bg-gray-800 rounded-l flex items-center p-4'>
                 <AlertIcon className='flex-none' />
               </div>
-              <aside className='p-4'>
-                Our next application deadline is delayed to spring or fall 2021
-                due to the COVID-19 pandemic.
-              </aside>
+              <aside className='p-4'>{announcement.message}</aside>
             </div>
           )}
         </div>
