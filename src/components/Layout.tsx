@@ -37,14 +37,14 @@ export const Layout: FunctionComponent<LayoutProps> = ({
           </Link>
         </div>
       )}
-      <header className={`${textColor} ${backgroundColor ?? ''} `}>
+      <header className={`${textColor} ${backgroundColor ?? ''}`}>
         <div className='max-w-screen-xl mx-auto flex flex-col items-center space-y-4 sm:space-y-0 sm:flex-row sm:justify-between sm:space-x-8 py-12 px-8 sm:px-16 '>
           <Link href='/'>
-            <a className='flex items-center space-x-4 xl:space-x-8  text-center sm:text-left'>
+            <a className='flex items-center text-center sm:text-left'>
               <img
                 src='/marin_sar_logo.svg'
                 title='Marin County Search and Rescue Logo'
-                className='h-44 hidden sm:block shadow-sm'
+                className='h-44 hidden sm:block shadow-sm sm:mr-4 xl:mr-8'
                 role='presentation'
               />
               <div>
