@@ -2,7 +2,9 @@ import fs from 'fs';
 import fetch from 'node-fetch';
 
 const chunkToEntry = (chunk) => {
-  const [number, title, date, summary] = chunk.split('\n');
+  const [number, title, date, summary] = chunk
+    .split('\n')
+    .map((line) => line.trim());
 
   // Trim commas off of date line
   const commaIndex = date.indexOf(',');
@@ -12,21 +14,17 @@ const chunkToEntry = (chunk) => {
   const parsedStartDate = new Date(startDate);
   const isoDate = parsedStartDate.toISOString().slice(0, 10);
 
+  if (!/^\d\d-\d\d$/.test(number)) {
+    throw new Error(`Invalid mission number "${number}"`);
+  }
+
   // Return fields in format for posting to Contentful
   return {
     fields: {
-      number: {
-        'en-US': number.trim(),
-      },
-      title: {
-        'en-US': title.trim(),
-      },
-      date: {
-        'en-US': isoDate,
-      },
-      summary: {
-        'en-US': summary.trim(),
-      },
+      number: { 'en-US': number },
+      title: { 'en-US': title },
+      date: { 'en-US': isoDate },
+      summary: { 'en-US': summary },
     },
   };
 };
