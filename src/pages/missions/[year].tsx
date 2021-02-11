@@ -34,6 +34,19 @@ export const getStaticProps: GetStaticProps<
   };
 };
 
+const formatDate = (dateString: string) => {
+  // The date string should be formatted as YYYY-MM-DD, but we check it's
+  // length just to be sure. If we are confident of the date format, we add 8
+  // hours to the date as a hack for specifying that the date should be
+  // formatted in the pacific time zone (America/Los_Angeles).
+  const date =
+    dateString.length === 10
+      ? new Date(`${dateString}T08:00:00Z`)
+      : new Date(dateString);
+
+  return date.toLocaleDateString();
+};
+
 const MissionsPage: FunctionComponent<MissionsPageProps> = ({ missions }) => {
   const router = useRouter();
   const { year } = router.query;
@@ -59,9 +72,7 @@ const MissionsPage: FunctionComponent<MissionsPageProps> = ({ missions }) => {
                 </div>{' '}
                 <div>
                   {title}{' '}
-                  <span className='font-normal'>
-                    ({new Date(date).toLocaleDateString()})
-                  </span>
+                  <span className='font-normal'>{formatDate(date)}</span>
                 </div>
               </h2>
             </a>
