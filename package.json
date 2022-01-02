@@ -9,24 +9,22 @@
   },
   "dependencies": {
     "@contentful/rich-text-react-renderer": "^14.1.2",
-    "@tailwindcss/typography": "^0.3.1",
-    "next": "10.0.2",
+    "@tailwindcss/forms": "^0.4.0",
+    "@tailwindcss/typography": "^0.5.0",
+    "next": "^12.0.7",
+    "node-fetch": "^2.6.1",
     "react": "17.0.1",
     "react-dom": "17.0.1"
   },
   "devDependencies": {
     "@contentful/rich-text-types": "^14.1.2",
-    "@tailwindcss/forms": "^0.2.1",
     "@types/node": "^14.14.9",
     "@types/react": "^16.9.56",
-    "autoprefixer": "^9",
-    "node-fetch": "^2.6.1",
-    "postcss": "^7",
-    "postcss-flexbugs-fixes": "^5.0.1",
-    "postcss-preset-env": "^6.7.0",
+    "autoprefixer": "^10.4.1",
+    "postcss": "^8.4.5",
     "prettier": "^2.1.2",
-    "tailwindcss": "npm:@tailwindcss/postcss7-compat",
-    "typescript": "^4.1.2"
+    "tailwindcss": "^3.0.8",
+    "typescript": "^4.5.4"
   },
   "volta": {
     "node": "15.3.0",
