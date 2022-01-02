@@ -271,7 +271,7 @@ export const getMissions = async (year: number): Promise<Mission[]> => {
     date: item.fields.date,
   }));
 
-  result.sort((a, b) => a.missionNumber.localeCompare(b.missionNumber));
+  result.sort((a, b) => b.missionNumber.localeCompare(a.missionNumber));
 
   return result;
 };
