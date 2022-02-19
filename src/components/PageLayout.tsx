@@ -1,4 +1,5 @@
 import { FunctionComponent } from 'react';
+import { useRouter } from 'next/router';
 
 import { PayPalWidget } from '../components/PayPalWidget';
 
@@ -9,7 +10,7 @@ const SidebarLink: FunctionComponent<{ href: string; title: string }> = ({
 }) => {
   return (
     <a
-      className='border-solid border-b border-gray-900 font-medium hover:text-blue-600 hover:border-blue-600'
+      className='font-medium border-b border-gray-900 border-solid hover:text-blue-600 hover:border-blue-600'
       href={href}
       title={title}
     >
@@ -19,13 +20,20 @@ const SidebarLink: FunctionComponent<{ href: string; title: string }> = ({
 };
 
 export const PageLayout: FunctionComponent = ({ children }) => {
+  const { asPath } = useRouter();
+
   return (
-    <div className='max-w-screen-xl mx-auto flex justify-start items-stretch h-full'>
-      <div className='m-8 sm:m-16 flex-grow'>
+    <div className='flex items-stretch justify-start h-full mx-auto max-w-screen-xl'>
+      <div className='flex-grow m-8 sm:m-16'>
         <article className='prose'>{children}</article>
+        {asPath === '/donate' && (
+          <div className='flex justify-center mt-8'>
+            <PayPalWidget />
+          </div>
+        )}
       </div>
-      <div className='hidden sm:block md:px-16 bg-gray-100 px-8 py-20'>
-        <h2 className='text-gray-600 text-sm uppercase font-bold mb-4'>
+      <div className='hidden px-8 py-20 bg-gray-100 sm:block md:px-16'>
+        <h2 className='mb-4 text-sm font-bold text-gray-600 uppercase'>
           Connect
         </h2>
         <p className='leading-6'>
@@ -45,7 +53,7 @@ export const PageLayout: FunctionComponent = ({ children }) => {
           </SidebarLink>
           .
         </p>
-        <h2 className='text-gray-600 text-sm uppercase font-bold mt-12 mb-4'>
+        <h2 className='mt-12 mb-4 text-sm font-bold text-gray-600 uppercase'>
           Donate
         </h2>
         <PayPalWidget />
