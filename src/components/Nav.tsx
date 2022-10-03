@@ -15,7 +15,7 @@ const NAV_LINKS = [
   { text: 'Missions', url: '/missions' },
   { text: 'K9 team', url: '/k9-team' },
   { text: 'Photos', url: 'https://www.facebook.com/marinsar/photos' },
-  { text: 'Members', url: 'https://sites.google.com/a/marinsar.org/members/' },
+  { text: 'Members', url: 'https://sites.google.com/marinsar.org/marinsarintranet/home' },
 ];
 
 export const Nav = () => {
