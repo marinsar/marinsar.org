@@ -29,7 +29,7 @@ export const ImageGallery: FunctionComponent<{ images: ImageType[] }> = ({
   ]);
 
   useEffect(() => {
-    let timeout: any;
+    let timeout: NodeJS.Timeout;
 
     switch (state) {
       case 'A_FADING_IN': {
@@ -85,10 +85,8 @@ export const ImageGallery: FunctionComponent<{ images: ImageType[] }> = ({
         className={isAVisible ? VISIBLE_CLASSES : INVISIBLE_CLASSES}
         src={aImage.url}
         alt={aImage.title}
-        width={aImage.width}
-        height={aImage.height}
-        layout='fill'
-        objectFit='cover'
+        fill
+        style={{ objectFit: 'cover' }}
         priority={true}
         role='presentation'
       />
@@ -96,10 +94,8 @@ export const ImageGallery: FunctionComponent<{ images: ImageType[] }> = ({
         className={isBVisible ? VISIBLE_CLASSES : INVISIBLE_CLASSES}
         src={bImage.url}
         alt={bImage.title}
-        width={bImage.width}
-        height={bImage.height}
-        layout='fill'
-        objectFit='cover'
+        fill
+        style={{ objectFit: 'cover' }}
         priority={true}
         role='presentation'
       />
