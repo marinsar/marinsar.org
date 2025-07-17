@@ -1,4 +1,4 @@
-import { FunctionComponent } from 'react';
+import { FunctionComponent, ReactNode } from 'react';
 import { GetStaticProps } from 'next';
 import Link from 'next/link';
 
@@ -27,9 +27,9 @@ export const getStaticProps: GetStaticProps<HomeProps> = async ({
   };
 };
 
-const BigLink: FunctionComponent<{ href: string }> = ({ href, children }) => {
+const BigLink: FunctionComponent<{ href: string, children: ReactNode }> = ({ href, children }) => {
   return (
-    <Link href={href}>
+    <Link legacyBehavior href={href}>
       <a className='border-b border-gray-50 border-dashed hover:text-blue-500 hover:border-blue-500 hover:border-solid hover:border'>
         {children}
       </a>

@@ -55,7 +55,7 @@ const MissionsPage: FunctionComponent<MissionsPageProps> = ({ missions }) => {
     <Layout title={`${year} Missions`}>
       <PageLayout>
         <p>
-          <Link href='/missions'>
+          <Link legacyBehavior href='/missions'>
             <a>← Back to all years</a>
           </Link>
         </p>
