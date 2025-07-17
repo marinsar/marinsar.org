@@ -1,10 +1,11 @@
-import type { FunctionComponent } from 'react';
+import type { FunctionComponent, ReactNode } from 'react';
 import Link from 'next/link';
 import Head from 'next/head';
 
 import { Nav } from './Nav';
 
 type LayoutProps = {
+  children: ReactNode;
   title?: string;
   preview?: boolean;
   backgroundColor?: 'bg-gray-900' | null;
