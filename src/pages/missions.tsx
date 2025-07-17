@@ -16,7 +16,7 @@ const MissionsIndexPage: FunctionComponent = ({}) => {
         <ul>
           {years.map((year) => (
             <li key={year}>
-              <Link href={`/missions/${year}`}>
+              <Link legacyBehavior href={`/missions/${year}`}>
                 <a>{year}</a>
               </Link>
             </li>

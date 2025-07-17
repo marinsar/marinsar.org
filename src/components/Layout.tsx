@@ -1,10 +1,11 @@
-import type { FunctionComponent } from 'react';
+import type { FunctionComponent, ReactNode } from 'react';
 import Link from 'next/link';
 import Head from 'next/head';
 
 import { Nav } from './Nav';
 
 type LayoutProps = {
+  children: ReactNode;
   title?: string;
   preview?: boolean;
   backgroundColor?: 'bg-gray-900' | null;
@@ -30,7 +31,7 @@ export const Layout: FunctionComponent<LayoutProps> = ({
       {preview && (
         <div className='bg-pink-600 text-gray-100 flex items-center justify-between px-4 py-2'>
           <div className='uppercase font-bold'>Previewing draft content</div>
-          <Link href='/api/exit_preview'>
+          <Link legacyBehavior href='/api/exit_preview'>
             <a className='text-sm border-b border-dashed hover:border-solid hover:text-white'>
               Exit preview
             </a>
@@ -39,7 +40,7 @@ export const Layout: FunctionComponent<LayoutProps> = ({
       )}
       <header className={`${textColor} ${backgroundColor ?? ''}`}>
         <div className='max-w-screen-xl mx-auto flex flex-col items-center space-y-4 sm:space-y-0 sm:flex-row sm:justify-between sm:space-x-8 py-12 px-8 sm:px-16 '>
-          <Link href='/'>
+          <Link legacyBehavior href='/'>
             <a className='flex items-center text-center sm:text-left'>
               <img
                 src='/marin_sar_logo.svg'

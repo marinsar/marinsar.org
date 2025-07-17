@@ -26,7 +26,7 @@ export const Nav = () => {
       <ul className='hidden sm:grid sm:grid-cols-2 sm:grid-rows-6 gap-x-8 grid-flow-col gap-y-0'>
         {NAV_LINKS.map(({ text, url }) => (
           <li key={url}>
-            <Link href={url}>
+            <Link legacyBehavior href={url}>
               <a className='flex items-center hover:text-blue-500 whitespace-nowrap'>
                 {text}
                 {url.startsWith('http') && (

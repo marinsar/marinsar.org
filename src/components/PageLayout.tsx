@@ -1,9 +1,9 @@
-import { FunctionComponent } from 'react';
+import { FunctionComponent, ReactNode } from 'react';
 import { useRouter } from 'next/router';
 
 import { PayPalWidget } from '../components/PayPalWidget';
 
-const SidebarLink: FunctionComponent<{ href: string; title: string }> = ({
+const SidebarLink: FunctionComponent<{ href: string; title: string; children: ReactNode }> = ({
   children,
   href,
   title,
@@ -19,7 +19,7 @@ const SidebarLink: FunctionComponent<{ href: string; title: string }> = ({
   );
 };
 
-export const PageLayout: FunctionComponent = ({ children }) => {
+export const PageLayout: FunctionComponent<{ children: ReactNode }> = ({ children }) => {
   const { asPath } = useRouter();
 
   return (
